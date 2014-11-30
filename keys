@@ -1,0 +1,4 @@
+# Map caps to ctrl
+setxkbmap -option ctrl:nocaps
+# Unmap menu key
+xmodmap -e 'keycode 135 = NoSymbol'
