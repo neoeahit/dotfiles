@@ -156,6 +156,7 @@ Plugin 'altercation/vim-colors-solarized'
 Plugin 'ervandew/supertab'
 Plugin 'klen/python-mode'
 Plugin 'tpope/vim-surround'
+Plugin 'sjl/gundo.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
