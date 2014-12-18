@@ -157,6 +157,7 @@ Plugin 'ervandew/supertab'
 Plugin 'klen/python-mode'
 Plugin 'tpope/vim-surround'
 Plugin 'sjl/gundo.vim'
+Plugin 'terryma/vim-multiple-cursors'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
