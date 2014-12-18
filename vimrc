@@ -27,6 +27,25 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " `s{char}{label}`
 nmap s <Plug>(easymotion-s2)
 
+" map <C-b> :ls<CR>:b<Space>
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+map <C-b> :CtrlPBuffer<CR>
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+
+" unlet g:ctrlp_custom_ignore
+" nlet g:ctrlp_user_command
+" et g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+
+let g:tmux_navigator_no_mappings = 1
+
+nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <C-/> :TmuxNavigatePrevious<cr>
+
 
 " This comes mostly from https://github.com/eevee/rc
 
@@ -93,19 +112,18 @@ set linebreak                   " break on what looks like boundaries
 set showbreak=↳\                " shown at the start of a wrapped line
 "set textwidth=80                " wrap after 80 columns
 
-
-" gui stuff
-set ttymouse=xterm2             " force mouse support for screen
-set mouse=a                     " terminal mouse when possible
-set guifont=Source\ Code\ Pro\ 9
-                                " nice fixedwidth font
-
 " unicode
 set encoding=utf-8              " best default encoding
 setglobal fileencoding=utf-8    " ...
 set nobomb                      " do not write utf-8 BOM!
 set fileencodings=ucs-bom,utf-8,iso-8859-1
                                 " order to detect Unicodeyness
+
+" gui stuff
+set ttymouse=xterm2             " force mouse support for screen
+set mouse=a                     " terminal mouse when possible
+set guifont=Source\ Code\ Pro\ 9
+                                " nice fixedwidth font
 
 set complete-=i                 " don't try to tab-complete #included files
 set completeopt-=preview        " preview window is super annoying
@@ -122,10 +140,25 @@ set nrformats-=octal            " don't try to auto-increment 'octal'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
-" Pathogen; load all bundles
-filetype off  " uh, necessary
-call pathogen#infect()
-call pathogen#helptags()
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'https://github.com/kien/ctrlp.vim'
+Plugin 'Lokaltog/vim-easymotion'
+"Plugin 'davidhalter/jedi-vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'ervandew/supertab'
+Plugin 'klen/python-mode'
+Plugin 'tpope/vim-surround'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
 
 " SuperTab and tab completion; use omni completion but fall back to completion
 " based on the current buffer's syntax keywords
