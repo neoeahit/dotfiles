@@ -152,12 +152,14 @@ Plugin 'https://github.com/kien/ctrlp.vim'
 Plugin 'Lokaltog/vim-easymotion'
 "Plugin 'davidhalter/jedi-vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'altercation/vim-colors-solarized'
+"Plugin 'altercation/vim-colors-solarized'
 Plugin 'ervandew/supertab'
 Plugin 'klen/python-mode'
 Plugin 'tpope/vim-surround'
 Plugin 'sjl/gundo.vim'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdcommenter'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
