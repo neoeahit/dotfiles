@@ -72,7 +72,7 @@ set history=1000                " remember command mode history
 set laststatus=2                " always show status line
 set lazyredraw                  " don't update screen inside macros, etc
 set matchtime=2                 " ms to show the matching paren for showmatch
-set number                      " line numbers
+"set number                      " line numbers
 set ruler                       " show the cursor position all the time
 set showcmd                     " display incomplete commands
 set showmatch                   " show matching brackets while typing
@@ -151,6 +151,7 @@ Plugin 'sjl/gundo.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'bling/vim-airline'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
