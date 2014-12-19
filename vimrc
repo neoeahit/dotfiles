@@ -159,6 +159,8 @@ Plugin 'rodjek/vim-puppet'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+let g:airline#extensions#branch#displayed_head_limit = 20
+
 let g:tmux_navigator_no_mappings = 1
 
 nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
