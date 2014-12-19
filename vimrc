@@ -18,6 +18,7 @@ set whichwrap+=<,>,h,l,[,]
 
 " vim mode preferred!
 set nocompatible
+set hidden
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
@@ -152,6 +153,8 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-obsession'
+Plugin 'rodjek/vim-puppet'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -233,8 +236,8 @@ let g:mapleader = ","
 vnoremap <C-X> <Esc>`.``gvP``P
 
 " -/= to navigate tabs
-noremap - :tabprevious<CR>
-noremap = :tabnext<CR>
+noremap - :bp<CR>
+noremap = :bn<CR>
 
 " Bind gb to toggle between the last two tabs
 map gb :exe "tabn ".g:ltv<CR>
