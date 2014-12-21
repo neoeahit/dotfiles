@@ -19,20 +19,6 @@ set whichwrap+=<,>,h,l,[,]
 " vim mode preferred!
 set nocompatible
 set hidden
-
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-
-" Bi-directional find motion
-" Jump to anywhere you want with minimal keystrokes, with just one key
-" binding.
-" `s{char}{label}`
-nmap s <Plug>(easymotion-s2)
-
-" map <C-b> :ls<CR>:b<Space>
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
-map <C-b> :CtrlPBuffer<CR>
-
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
 
 " unlet g:ctrlp_custom_ignore
@@ -73,7 +59,7 @@ set history=1000                " remember command mode history
 set laststatus=2                " always show status line
 set lazyredraw                  " don't update screen inside macros, etc
 set matchtime=2                 " ms to show the matching paren for showmatch
-"set number                      " line numbers
+set nonumber                    " line numbers
 set ruler                       " show the cursor position all the time
 set showcmd                     " display incomplete commands
 set showmatch                   " show matching brackets while typing
@@ -155,19 +141,42 @@ Plugin 'scrooloose/nerdcommenter'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-obsession'
 Plugin 'rodjek/vim-puppet'
+Plugin 'LaTeX-Box-Team/LaTeX-Box'
+Plugin 'maxbrunsfeld/vim-yankstack'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'yonchu/accelerated-smooth-scroll'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
 
+" Airline; custom
 let g:airline#extensions#branch#displayed_head_limit = 20
+let g:airline_powerline_fonts = 1
+let g:airline_theme='kolor'
 
 let g:tmux_navigator_no_mappings = 1
+
+map <C-y> <Plug>yankstack_substitute_older_paste
+map <C-Y> <Plug>yankstack_substitute_newer_paste
 
 nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <C-/> :TmuxNavigatePrevious<cr>
+
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Bi-directional find motion
+" Jump to anywhere you want with minimal keystrokes, with just one key
+" binding.
+" `s{char}{label}`
+nmap s <Plug>(easymotion-s2)
+
+" map <C-b> :ls<CR>:b<Space>
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+map <C-b> :CtrlPBuffer<CR>
 
 
 " SuperTab and tab completion; use omni completion but fall back to completion
@@ -209,9 +218,6 @@ let g:pymode_rope_lookup_project = 0
 " This is pretty fucking annoying too
 let g:pymode_rope_complete_on_dot = 0
 
-" Airline; use powerline-style glyphs and colors
-let g:airline_powerline_fonts = 1
-let g:airline_theme='powerlineish'
 
 " Ctrl-P settings
 let g:ctrlp_custom_ignore = { 'dir': '\v[\/](build|[.]git)$' }
