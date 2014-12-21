@@ -167,6 +167,10 @@ nnoremap <silent> <C-/> :TmuxNavigatePrevious<cr>
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
+let g:ac_smooth_scroll_no_default_key_mappings = 1
+nmap <silent> <C-d> <Plug>(ac-smooth-scroll-c-d)
+nmap <silent> <C-u> <Plug>(ac-smooth-scroll-c-u)
+
 " Bi-directional find motion
 " Jump to anywhere you want with minimal keystrokes, with just one key
 " binding.
