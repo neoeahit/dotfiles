@@ -145,6 +145,7 @@ Plugin 'LaTeX-Box-Team/LaTeX-Box'
 Plugin 'maxbrunsfeld/vim-yankstack'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'yonchu/accelerated-smooth-scroll'
+Plugin 'fatih/vim-go'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
