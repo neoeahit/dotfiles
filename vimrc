@@ -145,6 +145,7 @@ Plugin 'LaTeX-Box-Team/LaTeX-Box'
 Plugin 'maxbrunsfeld/vim-yankstack'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'yonchu/accelerated-smooth-scroll'
+Plugin 'tpope/vim-sleuth.git'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -182,6 +183,7 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 map <C-b> :CtrlPBuffer<CR>
 
+"autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
 " SuperTab and tab completion; use omni completion but fall back to completion
 " based on the current buffer's syntax keywords
