@@ -159,8 +159,11 @@ let g:airline_theme='kolor'
 
 let g:tmux_navigator_no_mappings = 1
 
+call yankstack#setup()
+nmap Y y$
 map <C-y> <Plug>yankstack_substitute_older_paste
 map <C-Y> <Plug>yankstack_substitute_newer_paste
+let g:yankstack_yank_keys = ['c', 'C', 'd', 'D', 'x', 'X', 'y', 'Y']
 
 nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
 nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
@@ -168,12 +171,11 @@ nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <C-/> :TmuxNavigatePrevious<cr>
 
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
-
 let g:ac_smooth_scroll_no_default_key_mappings = 1
 nmap <silent> <C-d> <Plug>(ac-smooth-scroll-c-d)
 nmap <silent> <C-u> <Plug>(ac-smooth-scroll-c-u)
 
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " Bi-directional find motion
 " Jump to anywhere you want with minimal keystrokes, with just one key
 " binding.
@@ -355,10 +357,10 @@ hi WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+\%#\@<!$/
 
 " molokai's diff coloring is terrible
-highlight DiffAdd    ctermbg=22
-highlight DiffDelete ctermbg=52
-highlight DiffChange ctermbg=17
-highlight DiffText   ctermbg=53
+"highlight DiffAdd    ctermbg=22
+"highlight DiffDelete ctermbg=52
+"highlight DiffChange ctermbg=17
+"highlight DiffText   ctermbg=53
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
