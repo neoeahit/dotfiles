@@ -125,12 +125,13 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+Plugin 'whatyouhide/vim-gotham'
+Plugin 'tomasr/molokai'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'https://github.com/kien/ctrlp.vim'
 Plugin 'Lokaltog/vim-easymotion'
 "Plugin 'davidhalter/jedi-vim'
 Plugin 'tpope/vim-fugitive'
-"Plugin 'altercation/vim-colors-solarized'
 Plugin 'ervandew/supertab'
 Plugin 'klen/python-mode'
 Plugin 'tpope/vim-surround'
@@ -329,8 +330,10 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 set t_Co=256  " force 256 colors
-colorscheme molokai
-hi Normal ctermbg=None
+"colorscheme molokai
+"hi Normal ctermbg=None
+colorscheme gotham256
+
 
 if has("autocmd")
   " Filetypes and indenting settings
