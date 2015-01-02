@@ -15,6 +15,7 @@ set wildignore+=.*.sw*,__pycache__,*.pyc
 " Wrap curson movement
 set whichwrap+=<,>,h,l,[,]
 
+set ttyfast
 
 " vim mode preferred!
 set nocompatible
@@ -59,7 +60,7 @@ set history=1000                " remember command mode history
 set laststatus=2                " always show status line
 set lazyredraw                  " don't update screen inside macros, etc
 set matchtime=2                 " ms to show the matching paren for showmatch
-set number                    " line numbers
+set number                      " line numbers
 set ruler                       " show the cursor position all the time
 set showcmd                     " display incomplete commands
 set showmatch                   " show matching brackets while typing
@@ -173,8 +174,18 @@ nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <C-/> :TmuxNavigatePrevious<cr>
 
 let g:ac_smooth_scroll_no_default_key_mappings = 1
-nmap <silent> <C-d> <Plug>(ac-smooth-scroll-c-d)
-nmap <silent> <C-u> <Plug>(ac-smooth-scroll-c-u)
+function! ScrollDown()
+    set norelativenumber
+    call ac_smooth_scroll#scroll('j', 2, g:ac_smooth_scroll_du_sleep_time_msec, 0)
+    set relativenumber
+endfunction
+function! ScrollUp()
+    set norelativenumber
+    call ac_smooth_scroll#scroll('k', 2, g:ac_smooth_scroll_du_sleep_time_msec, 0)
+    set relativenumber
+endfunction
+nmap <silent> <C-d> :call ScrollDown()<cr>
+nmap <silent> <C-u> :call ScrollUp()<cr>
 
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " Bi-directional find motion
