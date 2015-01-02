@@ -59,11 +59,11 @@ set history=1000                " remember command mode history
 set laststatus=2                " always show status line
 set lazyredraw                  " don't update screen inside macros, etc
 set matchtime=2                 " ms to show the matching paren for showmatch
-set nonumber                    " line numbers
+set number                    " line numbers
 set ruler                       " show the cursor position all the time
 set showcmd                     " display incomplete commands
 set showmatch                   " show matching brackets while typing
-"set relativenumber              " line numbers spread out from 0
+set relativenumber              " line numbers spread out from 0
 set cursorline                  " highlight current line
 set display=lastline,uhex       " show last line even if too long; use <xx>
 
@@ -130,7 +130,7 @@ Plugin 'tomasr/molokai'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'https://github.com/kien/ctrlp.vim'
 Plugin 'Lokaltog/vim-easymotion'
-"Plugin 'davidhalter/jedi-vim'
+Plugin 'davidhalter/jedi-vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'ervandew/supertab'
 Plugin 'klen/python-mode'
@@ -156,6 +156,7 @@ filetype plugin indent on    " required
 let g:airline#extensions#branch#displayed_head_limit = 20
 let g:airline_powerline_fonts = 1
 let g:airline_theme='kolor'
+let g:airline#extensions#syntastic#enabled = 0
 
 let g:tmux_navigator_no_mappings = 1
 
@@ -209,6 +210,9 @@ let g:syntastic_warning_symbol = "⚠"
 let g:syntastic_style_error_symbol = "☢"
 let g:syntastic_style_warning_symbol = "☹"
 
+" Do you still have a 80 columns terminal?
+let g:syntastic_python_flake8_args='--ignore=E501,E128'
+
 " Jedi
 " this doesn't fly with the yelp codebase
 "let g:jedi#popup_on_dot = 0
@@ -217,16 +221,12 @@ let g:syntastic_style_warning_symbol = "☹"
 " signatures are kind of annoying and unusably slow in a big codebase
 let g:jedi#show_call_signatures = 0
 
+let g:jedi#use_tabs_not_buffers = 0
+
 " Python-mode; disable linting, use syntastic
 let g:pymode_lint = 0
 " Aaand the rope stuff conflicts with jedi, surprise
 let g:pymode_rope = 0
-" Rope is fucking idiotic and keeps recursively reading my entire home
-" directory.  This at least tells it not to search upwards looking for a
-" .ropeproject marker.
-let g:pymode_rope_lookup_project = 0
-" This is pretty fucking annoying too
-let g:pymode_rope_complete_on_dot = 0
 
 
 " Ctrl-P settings
