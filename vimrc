@@ -5,6 +5,7 @@ command! W  write
 " F1 does nothing
 nmap <F1> <nop>
 set splitbelow
+set nostartofline " Do not go to the beginning of the line on buffer switch
 
 " Bash stype autocomplete
 set wildmode=longest,list
@@ -349,20 +350,28 @@ set t_Co=256  " force 256 colors
 "hi Normal ctermbg=None
 colorscheme gotham256
 
+let g:LatexBox_Folding=1
+let g:LatexBox_quickfix=4
+let g:tex_comment_nospell= 1
+autocmd BufNewFile,BufRead *.tex call SetLatex()
+function! SetLatex()
+  setlocal textwidth=100 spell
+  :map M :Latexmk<cr>
+endfunction
 
-if has("autocmd")
-  " Filetypes and indenting settings
-  filetype plugin indent on
+nmap Q gwap
 
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+" Filetypes and indenting settings
+filetype plugin indent on
 
-  " When editing a file, always jump to the last known cursor position.
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-endif " has("autocmd")
+" For all text files set 'textwidth' to 78 characters.
+autocmd FileType text setlocal textwidth=78
+
+" When editing a file, always jump to the last known cursor position.
+autocmd BufReadPost *
+\ if line("'\"") > 0 && line("'\"") <= line("$") |
+\   exe "normal g`\"" |
+\ endif
 
 " trailing whitespace and column; must define AFTER colorscheme, setf, etc!
 hi ColorColumn ctermbg=black guibg=darkgray
