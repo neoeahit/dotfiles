@@ -14,14 +14,15 @@ set wildmenu
 set wildignore+=.*.sw*,__pycache__,*.pyc
 
 " Wrap curson movement
-set whichwrap+=<,>,h,l,[,]
+map j gj
+map k gk
 
 set ttyfast
 
 " vim mode preferred!
 set nocompatible
 set hidden
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*.so,*.swp,*.zip     " MacOSX/Linux
 
 " unlet g:ctrlp_custom_ignore
 " nlet g:ctrlp_user_command
@@ -150,6 +151,8 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'yonchu/accelerated-smooth-scroll'
 Plugin 'fatih/vim-go'
 Plugin 'tpope/vim-sleuth.git'
+Plugin 'tpope/vim-fireplace.git'
+Plugin 'guns/vim-clojure-static.git'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -384,6 +387,7 @@ match WhitespaceEOL /\s\+\%#\@<!$/
 "highlight DiffChange ctermbg=17
 "highlight DiffText   ctermbg=53
 
+set whichwrap+=<,>,h,l,[,]
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Last but not least, allow for local overrides
