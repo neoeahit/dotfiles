@@ -153,6 +153,9 @@ Plugin 'fatih/vim-go'
 Plugin 'tpope/vim-sleuth.git'
 Plugin 'tpope/vim-fireplace.git'
 Plugin 'guns/vim-clojure-static.git'
+Plugin 'guns/vim-clojure-highlight.git'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'kovisoft/paredit'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -203,7 +206,7 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 map <CR> :CtrlPBuffer<CR>
 "autocmd CmdwinEnter * nnoremap <CR> <CR>
-"autocmd BufReadPost quickfix nnoremap <CR> <CR>
+autocmd BufReadPost quickfix nnoremap <CR> <CR>
 
 "autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
@@ -350,8 +353,19 @@ endif
 
 set t_Co=256  " force 256 colors
 "colorscheme molokai
-"hi Normal ctermbg=None
 colorscheme gotham256
+hi Normal ctermbg=None
+hi MatchParen ctermbg=None ctermfg=blue
+
+autocmd BufNewFile,BufRead *.clj call SetClojure()
+function! SetClojure()
+  :nnoremap <C-e> :Eval<CR>
+  :inoremap <C-e> <Esc>:Eval<CR>l
+  :RainbowParenthesesLoadRound
+  :RainbowParenthesesLoadBraces
+  :RainbowParenthesesLoadSquare
+  :RainbowParenthesesActivate
+endfunction
 
 let g:LatexBox_Folding=1
 let g:LatexBox_quickfix=4
