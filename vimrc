@@ -204,9 +204,10 @@ nmap s <Plug>(easymotion-s2)
 " map <C-b> :ls<CR>:b<Space>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-map <CR> :CtrlPBuffer<CR>
+nmap <CR> :CtrlPBuffer<CR>
 "autocmd CmdwinEnter * nnoremap <CR> <CR>
-autocmd BufReadPost quickfix nnoremap <CR> <CR>
+"autocmd BufReadPost quickfix nnoremap <CR> <CR>
+autocmd BufReadPost *fix nnoremap <buffer> <CR> <CR>
 
 "autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
