@@ -6,7 +6,6 @@ command! W  write
 nmap <F1> <nop>
 set splitbelow
 set nostartofline " Do not go to the beginning of the line on buffer switch
-
 " Bash stype autocomplete
 set wildmode=longest,list
 set wildmenu
@@ -46,6 +45,11 @@ if &term =~ "^screen"
     set t_fs=\
 endif
 " set title
+if has("gui_running")
+  if has("gui_gtk2")
+    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+  endif
+endif
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -84,8 +88,9 @@ set expandtab                   " never use hard tabs
 set shiftround                  " only indent to multiples of shiftwidth
 set smarttab                    " DTRT when shiftwidth/softtabstop diverge
 set fileformats=unix,dos        " unix linebreaks in new files please
+
 set listchars=tab:↹·,extends:⇉,precedes:⇇,nbsp:␠,trail:␠,nbsp:␣
-                                " appearance of invisible characters
+set list                        " appearance of invisible characters
 
 " wrapping
 "set colorcolumn=+1              " highlight 81st column
@@ -103,8 +108,6 @@ set fileencodings=ucs-bom,utf-8,iso-8859-1
 " gui stuff
 set ttymouse=xterm2             " force mouse support for screen
 set mouse=a                     " terminal mouse when possible
-set guifont=Source\ Code\ Pro\ 9
-                                " nice fixedwidth font
 
 set complete-=i                 " don't try to tab-complete #included files
 set completeopt-=preview        " preview window is super annoying
@@ -199,7 +202,7 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " Jump to anywhere you want with minimal keystrokes, with just one key
 " binding.
 " `s{char}{label}`
-nmap s <Plug>(easymotion-s2)
+nmap ` <Plug>(easymotion-s2)
 
 " map <C-b> :ls<CR>:b<Space>
 let g:ctrlp_map = '<c-p>'
@@ -275,8 +278,8 @@ let g:mapleader = ","
 vnoremap <C-X> <Esc>`.``gvP``P
 
 " -/= to navigate tabs
-noremap - :bp<CR>
-noremap = :bn<CR>
+"noremap - :bp<CR>
+"noremap = :bn<CR>
 
 " Bind gb to toggle between the last two tabs
 map gb :exe "tabn ".g:ltv<CR>
@@ -356,7 +359,12 @@ set t_Co=256  " force 256 colors
 "colorscheme molokai
 colorscheme gotham256
 hi Normal ctermbg=None
+"hi CursorLine ctermbg=None
 hi MatchParen ctermbg=None ctermfg=blue
+hi Search ctermbg=4 ctermfg=white
+
+let g:paredit_smartjump=1
+map <C-f> :call PareditToggle()<CR>
 
 autocmd BufNewFile,BufRead *.clj call SetClojure()
 function! SetClojure()
@@ -366,6 +374,9 @@ function! SetClojure()
   :RainbowParenthesesLoadBraces
   :RainbowParenthesesLoadSquare
   :RainbowParenthesesActivate
+  nmap Q {v}=<C-o><C-o>
+  imap <tab> <C-x><C-o>
+  command Repl :Connect nrepl://localhost:1234
 endfunction
 
 let g:LatexBox_Folding=1
@@ -409,3 +420,38 @@ set whichwrap+=<,>,h,l,[,]
 if filereadable(expand("~/.vimrc.local"))
     source ~/.vimrc.local
 endif
+
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['white',       'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['grey',        'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['blue',        'firebrick3'],
+    \ ]
+
+" Blink new search result
+function! HLNext (blinktime)
+    let [bufnum, lnum, col, off] = getpos('.')
+    let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+    let target_pat = '\c\%#\%('.@/.'\)'
+    let ring = matchadd('SpellBad', target_pat, 101)
+    redraw
+    exec 'sleep ' . float2nr(a:blinktime * 200) . 'm'
+    call matchdelete(ring)
+    redraw
+endfunction
+
+" This rewires n and N to do the highlighing...
+"nnoremap <silent> n   n:call HLNext(0.4)<cr>
+"nnoremap <silent> N   N:call HLNext(0.4)<cr>
