@@ -72,7 +72,7 @@ set showcmd                     " display incomplete commands
 set showmatch                   " show matching brackets while typing
 set relativenumber              " line numbers spread out from 0
 set cursorline                  " highlight current line
-set display=lastline,uhex       " show last line even if too long; use <xx>
+"set display=lastline,uhex       " show last line even if too long; use <xx>
 
 " regexes
 set incsearch                   " do incremental searching
@@ -89,7 +89,7 @@ set shiftround                  " only indent to multiples of shiftwidth
 set smarttab                    " DTRT when shiftwidth/softtabstop diverge
 set fileformats=unix,dos        " unix linebreaks in new files please
 
-set listchars=tab:↹·,extends:⇉,precedes:⇇,nbsp:␠,trail:␠,nbsp:␣
+set listchars=tab:▸\ ,extends:⇉,precedes:⇇,nbsp:␠,trail:␠,nbsp:␣
 set list                        " appearance of invisible characters
 
 " wrapping
@@ -145,6 +145,7 @@ Plugin 'sjl/gundo.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-obsession'
 Plugin 'rodjek/vim-puppet'
@@ -366,6 +367,10 @@ hi Search ctermbg=4 ctermfg=white
 let g:paredit_smartjump=1
 map <C-f> :call PareditToggle()<CR>
 
+autocmd BufNewFile,BufRead *.go call SetGolang()
+function! SetGolang()
+endfunction
+
 autocmd BufNewFile,BufRead *.clj call SetClojure()
 function! SetClojure()
   :nnoremap <C-e> :Eval<CR>
@@ -376,7 +381,7 @@ function! SetClojure()
   :RainbowParenthesesActivate
   nmap Q {v}=<C-o><C-o>
   imap <tab> <C-x><C-o>
-  command Repl :Connect nrepl://localhost:1234
+  command! Repl :Connect nrepl://localhost:1234
 endfunction
 
 let g:LatexBox_Folding=1
