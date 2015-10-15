@@ -1,8 +1,8 @@
 # dotfiles
 A set of dotfiles that i use.
 
+Screenshot of tmux + vim:
 
-![screenshot](https://www.dropbox.com/s/aka2aeperv4ux93/Screenshot%202015-10-14%2019.51.00.png)
+<img src="./screenshot.png" width="480">
 
-
-<img src="https://www.dropbox.com/s/aka2aeperv4ux93/Screenshot%202015-10-14%2019.51.00.png?dl=0" width="480">
+Requires [powerline fonts](https://github.com/powerline/fonts) and tmux >= 1.9.
