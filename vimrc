@@ -139,6 +139,7 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'ervandew/supertab'
+"Plugin 'Valloric/YouCompleteMe'
 Plugin 'klen/python-mode'
 Plugin 'tpope/vim-surround'
 Plugin 'sjl/gundo.vim'
@@ -208,6 +209,7 @@ nmap ` <Plug>(easymotion-s2)
 " map <C-b> :ls<CR>:b<Space>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_regexp = 1
 nmap <CR> :CtrlPBuffer<CR>
 "autocmd CmdwinEnter * nnoremap <CR> <CR>
 "autocmd BufReadPost quickfix nnoremap <CR> <CR>
