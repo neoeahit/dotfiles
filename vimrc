@@ -1,7 +1,10 @@
 " Fast change word
 nmap <Space> ciw
 " I often type :W instead of :w
-command! W  write
+command WQ wq
+command Wq wq
+command W w
+command Q q
 " F1 does nothing
 nmap <F1> <nop>
 set splitbelow
@@ -105,10 +108,6 @@ set nobomb                      " do not write utf-8 BOM!
 set fileencodings=ucs-bom,utf-8,iso-8859-1
                                 " order to detect Unicodeyness
 
-" gui stuff
-set ttymouse=xterm2             " force mouse support for screen
-set mouse=a                     " terminal mouse when possible
-
 set complete-=i                 " don't try to tab-complete #included files
 set completeopt-=preview        " preview window is super annoying
 
@@ -136,10 +135,8 @@ Plugin 'tomasr/molokai'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'https://github.com/kien/ctrlp.vim'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'davidhalter/jedi-vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'ervandew/supertab'
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'klen/python-mode'
 Plugin 'tpope/vim-surround'
 Plugin 'sjl/gundo.vim'
@@ -161,6 +158,7 @@ Plugin 'guns/vim-clojure-static.git'
 Plugin 'guns/vim-clojure-highlight.git'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'kovisoft/paredit'
+Plugin 'rust-lang/rust.vim'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -252,7 +250,7 @@ let g:jedi#use_tabs_not_buffers = 0
 
 " Python-mode; disable linting, use syntastic
 let g:pymode_lint = 0
-" Aaand the rope stuff conflicts with jedi, surprise
+" Don't use rope
 let g:pymode_rope = 0
 
 
@@ -447,18 +445,16 @@ let g:rbpt_colorpairs = [
     \ ['blue',        'firebrick3'],
     \ ]
 
-" Blink new search result
-function! HLNext (blinktime)
-    let [bufnum, lnum, col, off] = getpos('.')
-    let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
-    let target_pat = '\c\%#\%('.@/.'\)'
-    let ring = matchadd('SpellBad', target_pat, 101)
-    redraw
-    exec 'sleep ' . float2nr(a:blinktime * 200) . 'm'
-    call matchdelete(ring)
-    redraw
-endfunction
+let g:ycm_rust_src_path = '/home/fede/rust/rust-sources/src'
 
-" This rewires n and N to do the highlighing...
-"nnoremap <silent> n   n:call HLNext(0.4)<cr>
-"nnoremap <silent> N   N:call HLNext(0.4)<cr>
+let g:ycm_complete_in_strings = 0
+let g:ycm_complete_in_comments = 0
+let g:ycm_auto_trigger = 0
+nnoremap <leader>d :YcmCompleter GoTo<CR>
+nnoremap <leader>f :YcmCompleter GetDoc<CR>
+
+" Don't change the buffer scrolling position when moving to a different buffer
+if v:version >= 700
+  au BufLeave * let b:winview = winsaveview()
+  au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
+endif
