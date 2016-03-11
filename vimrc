@@ -5,6 +5,12 @@ command WQ wq
 command Wq wq
 command W w
 command Q q
+" I can't type :w
+nmap <c-b> :w<CR>
+imap <c-b> <Esc>:w<CR>
+" I can't type :w
+nmap <c-q> :q<CR>
+imap <c-q> <Esc>:q<CR>
 " F1 does nothing
 nmap <F1> <nop>
 nnoremap ' `
@@ -35,19 +41,19 @@ set wildignore+=*.so,*.swp,*.zip     " MacOSX/Linux
 
 " set xterm title, and inform vim of screen/tmux's syntax for doing the same
 set titlestring=vim\ %{expand(\"%t\")}
-if &term =~ "^screen"
-    " pretend this is xterm.  it probably is anyway, but if term is left as
-    " `screen`, vim doesn't understand ctrl-arrow.
-    if &term == "screen-256color"
-        set term=xterm-256color
-    else
-        set term=xterm
-    endif
-
-    " gotta set these *last*, since `set term` resets everything
-    set t_ts=k
-    set t_fs=\
-endif
+"if &term =~ "^screen"
+"    " pretend this is xterm.  it probably is anyway, but if term is left as
+"    " `screen`, vim doesn't understand ctrl-arrow.
+"    if &term == "screen-256color"
+"        set term=xterm-256color
+"    else
+"        set term=xterm
+"    endif
+"
+"    " gotta set these *last*, since `set term` resets everything
+"    set t_ts=k
+"    set t_fs=\
+"endif
 " set title
 if has("gui_running")
   if has("gui_gtk2")
@@ -179,11 +185,15 @@ map <C-y> <Plug>yankstack_substitute_older_paste
 map <C-Y> <Plug>yankstack_substitute_newer_paste
 let g:yankstack_yank_keys = ['c', 'C', 'd', 'D', 'x', 'X', 'y', 'Y']
 
-nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+" Seamless tmux navigation
 nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
-nnoremap <silent> <C-/> :TmuxNavigatePrevious<cr>
+nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
+
+" Autoscale on resize
+autocmd VimResized * :wincmd =
 
 let g:ac_smooth_scroll_no_default_key_mappings = 1
 function! ScrollDown()
@@ -405,12 +415,6 @@ hi ColorColumn ctermbg=black guibg=darkgray
 hi WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+\%#\@<!$/
 
-" molokai's diff coloring is terrible
-"highlight DiffAdd    ctermbg=22
-"highlight DiffDelete ctermbg=52
-"highlight DiffChange ctermbg=17
-"highlight DiffText   ctermbg=53
-
 set whichwrap+=<,>,h,l,[,]
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -438,7 +442,21 @@ let g:rbpt_colorpairs = [
     \ ['blue',        'firebrick3'],
     \ ]
 
-let g:ycm_rust_src_path = '/home/fede/rust/rust-sources/src'
+" Blink new search result
+function! HLNext (blinktime)
+    let [bufnum, lnum, col, off] = getpos('.')
+    let matchlen = strlen(matchstr(strpart(getline('.'),col-1),@/))
+    let target_pat = '\c\%#\%('.@/.'\)'
+    let ring = matchadd('SpellBad', target_pat, 101)
+    redraw
+    exec 'sleep ' . float2nr(a:blinktime * 300) . 'm'
+    call matchdelete(ring)
+    redraw
+endfunction
+
+" This rewires n and N to do the highlighing...
+nnoremap <silent> n   n:call HLNext(0.4)<cr>
+nnoremap <silent> N   N:call HLNext(0.4)<cr>
 
 let g:ycm_complete_in_strings = 0
 let g:ycm_complete_in_comments = 0
