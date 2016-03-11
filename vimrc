@@ -7,6 +7,7 @@ command W w
 command Q q
 " F1 does nothing
 nmap <F1> <nop>
+nnoremap ' `
 set splitbelow
 set nostartofline " Do not go to the beginning of the line on buffer switch
 " Bash stype autocomplete
@@ -117,7 +118,7 @@ set scrolloff=2                 " always have 2 lines of context on the screen
 set foldmethod=indent           " auto-fold based on indentation.  (py-friendly)
 set foldlevel=99
 set timeoutlen=1000             " wait 1s for mappings to finish
-set ttimeoutlen=100             " wait 0.1s for xterm keycodes to finish
+"set ttimeoutlen=100             " wait 0.1s for xterm keycodes to finish
 set nrformats-=octal            " don't try to auto-increment 'octal'
 
 
@@ -144,7 +145,8 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'scrooloose/syntastic'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'scrooloose/nerdtree'
-Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-obsession'
 Plugin 'rodjek/vim-puppet'
 Plugin 'LaTeX-Box-Team/LaTeX-Box'
@@ -238,21 +240,10 @@ let g:syntastic_style_warning_symbol = "☹"
 " Do you still have a 80 columns terminal?
 let g:syntastic_python_flake8_args='--ignore=E501,E128'
 
-" Jedi
-" this doesn't fly with the yelp codebase
-"let g:jedi#popup_on_dot = 0
-" messing with my completeopt is super rude
-"let g:jedi#auto_vim_configuration = 0
-" signatures are kind of annoying and unusably slow in a big codebase
-let g:jedi#show_call_signatures = 0
-
-let g:jedi#use_tabs_not_buffers = 0
-
 " Python-mode; disable linting, use syntastic
 let g:pymode_lint = 0
 " Don't use rope
 let g:pymode_rope = 0
-
 
 " Ctrl-P settings
 let g:ctrlp_custom_ignore = { 'dir': '\v[\/](build|[.]git)$' }
@@ -371,7 +362,7 @@ autocmd BufNewFile,BufRead *.go call SetGolang()
 function! SetGolang()
 endfunction
 
-autocmd BufNewFile,BufRead *.clj call SetClojure()
+autocmd BufNewFile,BufRead,BufAdd,BufCreate *.clj call SetClojure()
 function! SetClojure()
   :nnoremap <C-e> :Eval<CR>
   :inoremap <C-e> <Esc>:Eval<CR>l
@@ -394,6 +385,8 @@ function! SetLatex()
 endfunction
 
 nmap Q gwap
+
+autocmd BufNewFile,BufRead *.rs set filetype=rust
 
 " Filetypes and indenting settings
 filetype plugin indent on
@@ -452,9 +445,16 @@ let g:ycm_complete_in_comments = 0
 let g:ycm_auto_trigger = 0
 nnoremap <leader>d :YcmCompleter GoTo<CR>
 nnoremap <leader>f :YcmCompleter GetDoc<CR>
+nnoremap <leader>D :YcmShowDetailedDiagnostic<CR>
+
+nnoremap <leader>n :e %<.h<CR>
+nnoremap <leader>m :e %<.cpp<CR>
 
 " Don't change the buffer scrolling position when moving to a different buffer
 if v:version >= 700
   au BufLeave * let b:winview = winsaveview()
   au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
 endif
+
+" Rust autocompletion
+let g:ycm_rust_src_path = '/home/fede/rust/rust/src'
