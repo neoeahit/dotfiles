@@ -123,6 +123,7 @@ set autoread                    " reload changed files
 set scrolloff=2                 " always have 2 lines of context on the screen
 set foldmethod=indent           " auto-fold based on indentation.  (py-friendly)
 set foldlevel=99
+set foldnestmax=1
 set timeoutlen=1000             " wait 1s for mappings to finish
 "set ttimeoutlen=100             " wait 0.1s for xterm keycodes to finish
 set nrformats-=octal            " don't try to auto-increment 'octal'
@@ -130,46 +131,50 @@ set nrformats-=octal            " don't try to auto-increment 'octal'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plug 'whatyouhide/vim-gotham'
+Plug 'tomasr/molokai'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'https://github.com/ctrlpvim/ctrlp.vim'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'tpope/vim-fugitive'
+Plug 'klen/python-mode'
+Plug 'tpope/vim-surround'
+Plug 'sjl/gundo.vim'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'scrooloose/syntastic'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-obsession'
+Plug 'rodjek/vim-puppet'
+Plug 'LaTeX-Box-Team/LaTeX-Box'
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'airblade/vim-gitgutter'
+Plug 'yonchu/accelerated-smooth-scroll'
+Plug 'fatih/vim-go'
+Plug 'tpope/vim-sleuth.git'
+Plug 'tpope/vim-fireplace.git'
+Plug 'guns/vim-clojure-static.git'
+Plug 'guns/vim-clojure-highlight.git'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'kovisoft/paredit'
+Plug 'rust-lang/rust.vim'
 
-Plugin 'whatyouhide/vim-gotham'
-Plugin 'tomasr/molokai'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'https://github.com/kien/ctrlp.vim'
-Plugin 'Lokaltog/vim-easymotion'
-Plugin 'tpope/vim-fugitive'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'klen/python-mode'
-Plugin 'tpope/vim-surround'
-Plugin 'sjl/gundo.vim'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'scrooloose/syntastic'
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'scrooloose/nerdtree'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tpope/vim-obsession'
-Plugin 'rodjek/vim-puppet'
-Plugin 'LaTeX-Box-Team/LaTeX-Box'
-Plugin 'maxbrunsfeld/vim-yankstack'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'yonchu/accelerated-smooth-scroll'
-Plugin 'fatih/vim-go'
-Plugin 'tpope/vim-sleuth.git'
-Plugin 'tpope/vim-fireplace.git'
-Plugin 'guns/vim-clojure-static.git'
-Plugin 'guns/vim-clojure-highlight.git'
-Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'kovisoft/paredit'
-Plugin 'rust-lang/rust.vim'
+" Autocompletion plugins
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'artur-shaik/vim-javacomplete2'
+Plug 'zchee/deoplete-jedi'
 
-call vundle#end()            " required
+call plug#end()  " required
 filetype plugin indent on    " required
+
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+
+"let g:deoplete#sources#jedi#python_path = '/nail/home/fgiraud/.nvim_virtualenv3/bin/python'
 
 " Airline; custom
 let g:airline#extensions#branch#displayed_head_limit = 20
@@ -195,6 +200,7 @@ nnoremap <silent> <C-\> :TmuxNavigatePrevious<cr>
 " Autoscale on resize
 autocmd VimResized * :wincmd =
 
+let g:ac_smooth_scroll_du_sleep_time_msec=15
 let g:ac_smooth_scroll_no_default_key_mappings = 1
 function! ScrollDown()
     set norelativenumber
@@ -213,13 +219,13 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
 " Bi-directional find motion
 " Jump to anywhere you want with minimal keystrokes, with just one key
 " binding.
-" `s{char}{label}`
-nmap ` <Plug>(easymotion-s2)
+nmap s <Plug>(easymotion-s2)
 
 " map <C-b> :ls<CR>:b<Space>
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_regexp = 1
+let g:ctrlp_switch_buffer = '0'
 nmap <CR> :CtrlPBuffer<CR>
 "autocmd CmdwinEnter * nnoremap <CR> <CR>
 "autocmd BufReadPost quickfix nnoremap <CR> <CR>
@@ -249,11 +255,6 @@ let g:syntastic_style_warning_symbol = "☹"
 
 " Do you still have a 80 columns terminal?
 let g:syntastic_python_flake8_args='--ignore=E501,E128'
-
-" Python-mode; disable linting, use syntastic
-let g:pymode_lint = 0
-" Don't use rope
-let g:pymode_rope = 0
 
 " Ctrl-P settings
 let g:ctrlp_custom_ignore = { 'dir': '\v[\/](build|[.]git)$' }
@@ -476,3 +477,27 @@ endif
 
 " Rust autocompletion
 let g:ycm_rust_src_path = '/home/fede/rust/rust/src'
+
+" Jump to next/prev closed folding
+function! NextClosedFold(dir)
+    let cmd = 'norm!z' . a:dir
+    let view = winsaveview()
+    let [l0, l, open] = [0, view.lnum, 1]
+    while l != l0 && open
+        exe cmd
+        let [l0, l] = [l, line('.')]
+        let open = foldclosed(l) < 0
+    endwhile
+    if open
+        call winrestview(view)
+    endif
+endfunction
+nnoremap <silent> zj :call NextClosedFold('j')<cr>
+nnoremap <silent> zk :call NextClosedFold('k')<cr>
+
+" Define Gg amazing grepping commands
+:command -nargs=+ Gg execute 'silent Ggrep!' <q-args> | cw | redraw!
+:command Ggw execute 'silent Ggrep! <cword>' | cw | redraw!
+
+"Use tab for completion
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
