@@ -1,5 +1,6 @@
 " Fast change word
 nmap <Space> ciw
+nmap Y y$
 " I often type :W instead of :w
 command WQ wq
 command Wq wq
@@ -32,10 +33,6 @@ set ttyfast
 set nocompatible
 set hidden
 set wildignore+=*.so,*.swp,*.zip     " MacOSX/Linux
-
-" unlet g:ctrlp_custom_ignore
-" nlet g:ctrlp_user_command
-" et g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
 
 " This comes mostly from https://github.com/eevee/rc
 
@@ -151,27 +148,29 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-obsession'
 Plug 'rodjek/vim-puppet'
 Plug 'LaTeX-Box-Team/LaTeX-Box'
-Plug 'maxbrunsfeld/vim-yankstack'
+"Plug 'tpope/vim-repeat'
+"Plug 'svermeulen/vim-easyclip'
 Plug 'airblade/vim-gitgutter'
 Plug 'yonchu/accelerated-smooth-scroll'
 Plug 'fatih/vim-go'
-Plug 'tpope/vim-sleuth.git'
-Plug 'tpope/vim-fireplace.git'
-Plug 'guns/vim-clojure-static.git'
-Plug 'guns/vim-clojure-highlight.git'
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-fireplace'
+Plug 'guns/vim-clojure-static'
+Plug 'guns/vim-clojure-highlight'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'kovisoft/paredit'
 Plug 'rust-lang/rust.vim'
 
 " Autocompletion plugins
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'racer-rust/vim-racer'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'zchee/deoplete-jedi'
 
 call plug#end()  " required
 filetype plugin indent on    " required
 
-" Use deoplete.
+" Deoplete
 let g:deoplete#enable_at_startup = 1
 
 "let g:deoplete#sources#jedi#python_path = '/nail/home/fgiraud/.nvim_virtualenv3/bin/python'
@@ -184,11 +183,10 @@ let g:airline#extensions#syntastic#enabled = 0
 
 let g:tmux_navigator_no_mappings = 1
 
-call yankstack#setup()
-nmap Y y$
-map <C-y> <Plug>yankstack_substitute_older_paste
-map <C-Y> <Plug>yankstack_substitute_newer_paste
-let g:yankstack_yank_keys = ['c', 'C', 'd', 'D', 'x', 'X', 'y', 'Y']
+"call yankstack#setup()
+"map <C-y> <Plug>yankstack_substitute_older_paste
+"map <C-Y> <Plug>yankstack_substitute_newer_paste
+"let g:yankstack_yank_keys = ['c', 'C', 'd', 'D', 'x', 'X', 'y', 'Y']
 
 " Seamless tmux navigation
 nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
@@ -226,20 +224,19 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_regexp = 1
 let g:ctrlp_switch_buffer = '0'
+let g:ctrlp_custom_ignore = { 'dir': '\v[\/](build|[.]git)$' }
+" Try to tame it a bit on very large projects
+let g:ctrlp_max_files = 50000
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_dotfiles = 1
+let g:ctrlp_lazy_update = 100
+
 nmap <CR> :CtrlPBuffer<CR>
 "autocmd CmdwinEnter * nnoremap <CR> <CR>
 "autocmd BufReadPost quickfix nnoremap <CR> <CR>
 autocmd BufReadPost *fix nnoremap <buffer> <CR> <CR>
 
-"autocmd CursorMoved * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
-
-" SuperTab and tab completion; use omni completion but fall back to completion
-" based on the current buffer's syntax keywords
-"let g:SuperTabDefaultCompletionType = "<c-x><c-o>"
 set omnifunc=syntaxcomplete#Complete
-"autocmd FileType *
-"    \ call SuperTabChain(&omnifunc, "<c-p>") |
-"    \ call SuperTabSetDefaultCompletionType("<c-x><c-u>")
 
 " Syntastic
 " Don't bother flaking on :wq because I won't even see it!
@@ -255,15 +252,6 @@ let g:syntastic_style_warning_symbol = "☹"
 
 " Do you still have a 80 columns terminal?
 let g:syntastic_python_flake8_args='--ignore=E501,E128'
-
-" Ctrl-P settings
-let g:ctrlp_custom_ignore = { 'dir': '\v[\/](build|[.]git)$' }
-" Try to tame it a bit on very large projects
-let g:ctrlp_max_files = 50000
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_dotfiles = 1
-let g:ctrlp_lazy_update = 100
-
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Bindings
@@ -460,12 +448,12 @@ nnoremap <silent> n   n:call HLNext(0.4)<cr>
 nnoremap <silent> N   N:call HLNext(0.4)<cr>
 
 " YouCompleteMe
-let g:ycm_complete_in_strings = 0
-let g:ycm_complete_in_comments = 0
-let g:ycm_auto_trigger = 0
-nnoremap <leader>d :YcmCompleter GoTo<CR>
-nnoremap <leader>f :YcmCompleter GetDoc<CR>
-nnoremap <leader>D :YcmShowDetailedDiagnostic<CR>
+"let g:ycm_complete_in_strings = 0
+"let g:ycm_complete_in_comments = 0
+"let g:ycm_auto_trigger = 0
+"nnoremap <leader>d :YcmCompleter GoTo<CR>
+"nnoremap <leader>f :YcmCompleter GetDoc<CR>
+"nnoremap <leader>D :YcmShowDetailedDiagnostic<CR>
 
 nnoremap <leader>n :e %<.h<CR>
 nnoremap <leader>m :e %<.cpp<CR>
@@ -497,8 +485,8 @@ nnoremap <silent> zj :call NextClosedFold('j')<cr>
 nnoremap <silent> zk :call NextClosedFold('k')<cr>
 
 " Define Gg amazing grepping commands
-:command -nargs=+ Gg execute 'silent Ggrep!' <q-args> | cw | redraw!
-:command Ggw execute 'silent Ggrep! <cword>' | cw | redraw!
+command -nargs=+ Gg execute 'silent Ggrep!' <q-args> | cw | redraw!
+command Ggw execute 'silent Ggrep! <cword>' | cw | redraw!
 
 "Use tab for completion
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
