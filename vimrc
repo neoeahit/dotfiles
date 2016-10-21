@@ -458,6 +458,7 @@ endfunction
 nnoremap <silent> n   n:call HLNext(0.4)<cr>
 nnoremap <silent> N   N:call HLNext(0.4)<cr>
 
+" YouCompleteMe
 let g:ycm_complete_in_strings = 0
 let g:ycm_complete_in_comments = 0
 let g:ycm_auto_trigger = 0
